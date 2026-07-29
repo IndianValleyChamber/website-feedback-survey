@@ -351,3 +351,38 @@ surveyForm.addEventListener("submit", async (event) => {
     formStatus.classList.add("error");
   }
 });
+
+
+const shareButton = document.getElementById("shareSurveyButton");
+const shareMessage = document.getElementById("shareSurveyMessage");
+
+const surveyUrl =
+  "https://indianvalleychamber.github.io/website-feedback-survey/";
+
+shareButton.addEventListener("click", async () => {
+  const shareData = {
+    title: "IVCC Website Feedback Survey",
+    text: "Help shape the future of the Indian Valley Chamber website by taking our quick survey.",
+    url: surveyUrl
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+      shareMessage.textContent = "";
+    } else {
+      await navigator.clipboard.writeText(surveyUrl);
+      shareMessage.textContent = "Survey link copied!";
+    }
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      try {
+        await navigator.clipboard.writeText(surveyUrl);
+        shareMessage.textContent = "Survey link copied!";
+      } catch {
+        shareMessage.textContent =
+          "Copy this link: " + surveyUrl;
+      }
+    }
+  }
+});
