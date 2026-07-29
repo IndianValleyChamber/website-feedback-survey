@@ -983,3 +983,39 @@ textarea::placeholder {
   color: #5f6675;
   line-height: 1.6;
 }
+
+.share-survey-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 22px;
+  border: 1px solid #4f5fa8;
+  border-radius: 6px;
+  background: #4f5fa8;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.share-survey-button:hover {
+  background: #ffffff;
+  color: #4f5fa8;
+  transform: translateY(-1px);
+}
+
+.share-survey-button:focus-visible {
+  outline: 3px solid rgba(79, 95, 168, 0.28);
+  outline-offset: 3px;
+}
+
+.share-survey-message {
+  min-height: 1.5em;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
