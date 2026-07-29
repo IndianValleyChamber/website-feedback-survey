@@ -1019,3 +1019,32 @@ textarea::placeholder {
   margin-top: 10px;
   font-size: 0.9rem;
 }
+
+
+/* =========================================================
+   SHARE SURVEY — MOBILE
+========================================================= */
+
+@media (max-width: 720px) {
+  .share-survey-panel {
+    width: 100%;
+    margin-top: 24px;
+    padding: 26px 22px;
+
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .share-survey-action {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .share-survey-button {
+    width: 100%;
+  }
+
+  .share-survey-message {
+    text-align: left;
+  }
+}
