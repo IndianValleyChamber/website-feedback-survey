@@ -9,6 +9,20 @@ const SCRIPT_URL =
 
 
 /* =========================================================
+   SURVEY SHARE DETAILS
+========================================================= */
+
+const SURVEY_URL =
+  "https://indianvalleychamber.github.io/website-feedback-survey/";
+
+const SURVEY_SHARE_TITLE =
+  "IVCC Website Feedback Survey";
+
+const SURVEY_SHARE_TEXT =
+  "Share your feedback about the Indian Valley Chamber of Commerce website.";
+
+
+/* =========================================================
    ELEMENTS
 ========================================================= */
 
@@ -18,13 +32,20 @@ const formStatus = document.getElementById("formStatus");
 const successPanel = document.getElementById("successPanel");
 
 const visitMoreOften = document.getElementById("visitMoreOften");
-const additionalComments = document.getElementById("additionalComments");
+const additionalComments =
+  document.getElementById("additionalComments");
 
 const visitMoreOftenCount =
   document.getElementById("visitMoreOftenCount");
 
 const additionalCommentsCount =
   document.getElementById("additionalCommentsCount");
+
+const shareSurveyButton =
+  document.getElementById("shareSurveyButton");
+
+const shareSurveyMessage =
+  document.getElementById("shareSurveyMessage");
 
 
 /* =========================================================
@@ -36,7 +57,10 @@ function updateCharacterCount(field, counter) {
 }
 
 visitMoreOften.addEventListener("input", () => {
-  updateCharacterCount(visitMoreOften, visitMoreOftenCount);
+  updateCharacterCount(
+    visitMoreOften,
+    visitMoreOftenCount
+  );
 });
 
 additionalComments.addEventListener("input", () => {
@@ -64,7 +88,8 @@ function enforceCheckboxLimit(groupName, maximum) {
         (item) => item.checked
       );
 
-      const limitReached = selected.length >= maximum;
+      const limitReached =
+        selected.length >= maximum;
 
       checkboxes.forEach((item) => {
         if (!item.checked) {
@@ -102,7 +127,8 @@ function getCheckboxValues(name) {
 
 
 function showError(elementId, message) {
-  const errorElement = document.getElementById(elementId);
+  const errorElement =
+    document.getElementById(elementId);
 
   if (!errorElement) {
     return;
@@ -110,7 +136,8 @@ function showError(elementId, message) {
 
   errorElement.textContent = message;
 
-  const questionCard = errorElement.closest(".question-card");
+  const questionCard =
+    errorElement.closest(".question-card");
 
   if (questionCard) {
     questionCard.classList.add("has-error");
@@ -119,7 +146,8 @@ function showError(elementId, message) {
 
 
 function clearError(elementId) {
-  const errorElement = document.getElementById(elementId);
+  const errorElement =
+    document.getElementById(elementId);
 
   if (!errorElement) {
     return;
@@ -127,7 +155,8 @@ function clearError(elementId) {
 
   errorElement.textContent = "";
 
-  const questionCard = errorElement.closest(".question-card");
+  const questionCard =
+    errorElement.closest(".question-card");
 
   if (questionCard) {
     questionCard.classList.remove("has-error");
@@ -146,12 +175,14 @@ function clearValidationErrors() {
 
 
 function focusFirstInvalidField() {
-  const invalidField = surveyForm.querySelector(":invalid");
+  const invalidField =
+    surveyForm.querySelector(":invalid");
 
   if (invalidField) {
     invalidField.focus();
 
-    const questionCard = invalidField.closest(".question-card");
+    const questionCard =
+      invalidField.closest(".question-card");
 
     if (questionCard) {
       questionCard.scrollIntoView({
@@ -288,8 +319,10 @@ surveyForm.addEventListener("submit", async (event) => {
   const submissionData = buildSubmissionData();
 
   submitButton.disabled = true;
-  submitButton.querySelector(".button-text").textContent =
-    "Submitting...";
+
+  submitButton
+    .querySelector(".button-text")
+    .textContent = "Submitting...";
 
   formStatus.textContent =
     "Please wait while your response is recorded.";
@@ -321,7 +354,8 @@ surveyForm.addEventListener("submit", async (event) => {
 
     if (!result.success) {
       throw new Error(
-        result.message || "The response could not be saved."
+        result.message ||
+        "The response could not be saved."
       );
     }
 
@@ -338,12 +372,16 @@ surveyForm.addEventListener("submit", async (event) => {
     });
 
   } catch (error) {
-    console.error("Survey submission error:", error);
+    console.error(
+      "Survey submission error:",
+      error
+    );
 
     submitButton.disabled = false;
 
-    submitButton.querySelector(".button-text").textContent =
-      "Submit Feedback";
+    submitButton
+      .querySelector(".button-text")
+      .textContent = "Submit Feedback";
 
     formStatus.textContent =
       "Your response could not be submitted. Please check your connection and try again.";
@@ -353,36 +391,87 @@ surveyForm.addEventListener("submit", async (event) => {
 });
 
 
-const shareButton = document.getElementById("shareSurveyButton");
-const shareMessage = document.getElementById("shareSurveyMessage");
+/* =========================================================
+   SHARE SURVEY
+========================================================= */
 
-const surveyUrl =
-  "https://indianvalleychamber.github.io/website-feedback-survey/";
+function showShareMessage(message, isError = false) {
+  if (!shareSurveyMessage) {
+    return;
+  }
 
-shareButton.addEventListener("click", async () => {
-  const shareData = {
-    title: "IVCC Website Feedback Survey",
-    text: "Help shape the future of the Indian Valley Chamber website by taking our quick survey.",
-    url: surveyUrl
-  };
+  shareSurveyMessage.textContent = message;
+  shareSurveyMessage.classList.toggle(
+    "error",
+    isError
+  );
+}
 
+
+async function copySurveyLink() {
   try {
-    if (navigator.share) {
-      await navigator.share(shareData);
-      shareMessage.textContent = "";
-    } else {
-      await navigator.clipboard.writeText(surveyUrl);
-      shareMessage.textContent = "Survey link copied!";
-    }
+    await navigator.clipboard.writeText(SURVEY_URL);
+
+    showShareMessage(
+      "Survey link copied to your clipboard."
+    );
   } catch (error) {
-    if (error.name !== "AbortError") {
+    console.error(
+      "Clipboard copy failed:",
+      error
+    );
+
+    showShareMessage(
+      `Copy this link: ${SURVEY_URL}`,
+      true
+    );
+  }
+}
+
+
+if (shareSurveyButton) {
+  shareSurveyButton.addEventListener(
+    "click",
+    async () => {
+      showShareMessage("");
+
+      const shareData = {
+        title: SURVEY_SHARE_TITLE,
+        text: SURVEY_SHARE_TEXT,
+        url: SURVEY_URL
+      };
+
       try {
-        await navigator.clipboard.writeText(surveyUrl);
-        shareMessage.textContent = "Survey link copied!";
-      } catch {
-        shareMessage.textContent =
-          "Copy this link: " + surveyUrl;
+        if (
+          navigator.share &&
+          (
+            !navigator.canShare ||
+            navigator.canShare(shareData)
+          )
+        ) {
+          await navigator.share(shareData);
+          return;
+        }
+
+        await copySurveyLink();
+
+      } catch (error) {
+        /*
+          AbortError means the visitor closed the share menu.
+          That is not a real error, so no message is needed.
+        */
+
+        if (error.name === "AbortError") {
+          return;
+        }
+
+        console.error(
+          "Survey sharing failed:",
+          error
+        );
+
+        await copySurveyLink();
       }
     }
-  }
-});
+  );
+}
