@@ -975,3 +975,11 @@ textarea::placeholder {
   }
 
 }
+
+.current-site-note {
+  margin: 2rem 0 0.75rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #5f6675;
+  line-height: 1.6;
+}
